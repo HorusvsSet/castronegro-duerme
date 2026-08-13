@@ -160,19 +160,41 @@
   .role-card{background:#1a0e2c;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;transition:border .15s, transform .08s;}
   .role-card:active{transform:scale(.98);}
   .role-card-on{border:1px solid var(--accent);background:linear-gradient(160deg,#241238,#1a0e2c);box-shadow:0 0 0 1px rgba(178,59,255,.3);}
-  .role-card-top{display:flex;align-items:center;justify-content:space-between;}
-  .rc-emoji{font-size:30px;}
-  .rc-count{width:26px;height:26px;border-radius:50%;background:#3a2b55;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;}
-  .rc-count-on{background:var(--accent);color:#fff;}
+  .role-card{background:#1a0e2c;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;transition:border .15s, transform .08s;position:relative;}
+  .role-card:active{transform:scale(.98);}
+  .role-card-on{border:1px solid var(--accent);background:linear-gradient(160deg,#241238,#1a0e2c);box-shadow:0 0 0 1px rgba(178,59,255,.3);}
+  .role-card-top{display:flex;align-items:center;justify-content:space-between;gap:4px;}
+  .rc-emoji{font-size:30px;line-height:1;}
+  .rc-info{width:30px;height:30px;padding:0;border-radius:50%;font-size:13px;font-weight:800;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:var(--muted);cursor:pointer;box-shadow:none;display:flex;align-items:center;justify-content:center;}
+  .rc-info:active{background:rgba(255,255,255,.18);}
   .rc-name{font-weight:800;font-size:14px;line-height:1.3;}
   .chip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;align-self:flex-start;}
   .chip-lobo{background:rgba(192,57,43,.25);color:#ff8a7a;border:1px solid rgba(192,57,43,.4);}
   .chip-solo{background:rgba(245,197,66,.15);color:var(--gold);border:1px solid rgba(245,197,66,.35);}
   .chip-aldeano{background:rgba(61,220,132,.15);color:#7ee2a8;border:1px solid rgba(61,220,132,.3);}
-  .role-card .stepper{display:flex;gap:8px;justify-content:flex-end;align-items:center;margin-top:2px;}
-  .role-card .stepper button{width:34px;height:34px;padding:0;font-size:18px;border-radius:10px;}
-  .role-card .stepper button.plus{background:linear-gradient(135deg,var(--accent),#7b2fd0);}
+  .rc-stepper{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:2px;}
+  .rc-count{width:28px;height:28px;border-radius:50%;background:#3a2b55;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;}
+  .rc-count-on{background:var(--accent);color:#fff;}
+  .rc-stepper button{width:34px;height:34px;padding:0;font-size:18px;border-radius:10px;box-shadow:none;}
+  .rc-stepper button.rc-min{background:linear-gradient(135deg,#3a2b55,#4a3670);}
+  .rc-stepper button.rc-plus{background:linear-gradient(135deg,var(--accent),#7b2fd0);}
   .exp-meta{font-size:11px;color:var(--muted);padding-right:24px;}
+
+  /* Lista de eventos de Luna Nueva en el menú */
+  .expansion.eventos summary{flex-direction:row;align-items:center;gap:10px;}
+  .eventos-list{display:flex;flex-direction:column;gap:8px;padding:2px 14px 14px;max-height:50vh;overflow-y:auto;}
+  .ev-item{background:#1a0e2c;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:10px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+  .ev-item .ev-emoji{font-size:20px;}
+  .ev-nombre-sm{font-weight:800;font-size:13px;color:var(--gold);}
+  .ev-item p{font-size:12px;color:var(--muted);width:100%;line-height:1.4;margin:0;}
+
+  /* Modal de info de rol */
+  .info-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:999;padding:24px;}
+  .info-box{position:relative;background:linear-gradient(160deg,#2a1845,#1d1030);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:28px 22px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:fade .2s ease;}
+  .info-close{position:absolute;top:12px;right:12px;width:32px;height:32px;padding:0;border-radius:50%;font-size:14px;background:rgba(255,255,255,.08);box-shadow:none;color:var(--muted);}
+  .info-emoji{font-size:54px;}
+  .info-nombre{font-size:20px;font-weight:900;margin:8px 0 4px;letter-spacing:.5px;}
+  .info-lore{font-size:14px;line-height:1.55;color:#d8cbe8;margin:0;}
 
   /* interruptor (switch) de expansión */
   .switch{display:flex;align-items:center;gap:8px;cursor:pointer;flex-wrap:wrap;}
@@ -223,7 +245,7 @@
   .reveal-cover{position:absolute;inset:0;background:
     radial-gradient(circle at 50% 20%, rgba(178,59,255,.18), transparent 60%),
     linear-gradient(160deg,#1d1030,#2a1845);
-    border:1px solid rgba(255,255,255,.12);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:3;transition:transform .3s cubic-bezier(.4,0,.2,1);cursor:pointer;}
+    border:1px solid rgba(255,255,255,.12);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:3;transition:transform .3s cubic-bezier(.4,0,.2,1);cursor:pointer;will-change:transform;}
   .reveal-cover .flecha{font-size:15px;color:var(--muted);letter-spacing:.5px;}
   .reveal-cover .hint{font-size:12px;color:var(--muted);text-align:center;padding:0 18px;line-height:1.5;opacity:.8;}
   .reveal-cover .nombre-tapa{font-size:30px;font-weight:900;letter-spacing:.5px;text-shadow:0 2px 12px rgba(0,0,0,.5);}

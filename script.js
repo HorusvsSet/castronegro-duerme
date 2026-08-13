@@ -215,10 +215,10 @@ function renderRolesConfig(){
       const r=ROLES[id];
       const cant=cfgRoles[id]||0;
       return '<div class="role-card'+(cant>0?' role-card-on':'')+'">'
-        +'<div class="role-card-top"><span class="rc-emoji">'+r.emoji+'</span><span class="rc-count'+(cant>0?' rc-count-on':'')+'" id="cnt_'+id+'">'+cant+'</span></div>'
+        +'<div class="role-card-top"><span class="rc-emoji">'+r.emoji+'</span><button class="rc-info" onclick="mostrarInfoRol(\''+id+'\')" title="Ver habilidad">ⓘ</button></div>'
         +'<div class="rc-name" style="color:'+(colorRol[id]||'#fff')+'">'+r.nombre+'</div>'
         +chipEquipo(r.equipo)
-        +'<div class="stepper"><button onclick="cambiarRol(\''+id+'\',-1)">−</button><button class="plus" onclick="cambiarRol(\''+id+'\',1)">+</button></div>'
+        +'<div class="rc-stepper"><span class="rc-count'+(cant>0?' rc-count-on':'')+'" id="cnt_'+id+'">'+cant+'</span><button class="rc-min" onclick="cambiarRol(\''+id+'\',-1)">−</button><button class="rc-plus" onclick="cambiarRol(\''+id+'\',1)">+</button></div>'
         +'</div>';
     }).join("");
     secciones+='<details class="expansion" '+(activa?"open":"")+'><summary>'
@@ -226,19 +226,37 @@ function renderRolesConfig(){
       +'<span class="exp-meta">'+usados+'/'+ids.length+' roles · '+EXPANSIONES[exp].desc+'</span>'
       +'</summary><div class="role-grid">'+tarjetas+'</div></details>';
   }
+  // Eventos de Luna Nueva: sección separada (informativa)
+  let eventosHTML="";
+  if(activeExp.luna){
+    eventosHTML='<details class="expansion eventos"><summary><span class="exp-name">📜 Eventos de Luna Nueva</span><span class="exp-meta">'+EVENTOS.length+' cartas · se roban al amanecer</span></summary><div class="eventos-list">'
+      +EVENTOS.map(ev=>'<div class="ev-item"><span class="ev-emoji">'+ev.emoji+'</span><span class="ev-nombre-sm">'+ev.nombre+'</span><p>'+ev.desc+'</p></div>').join("")
+      +'</div></details>';
+  }
 
   app.innerHTML='<div class="screen active">'
    +'<h1>🃏 Roles</h1>'
    +'<div class="subtitle">'+total+' jugadores · activa expansiones y toca <b>+</b> para añadir</div>'
-   +'<div class="card"><h2><span class="emoji">🎲</span> Modo aleatorio</h2><p style="font-size:13px;color:var(--muted)">Reparte al azar entre Lobos y Aldeanos.</p>'
-     +'<div class="random-row"><label>🐺 Lobos</label><input type="number" id="randLobos" min="1" value="1"><label>🧑‍🌾 Aldeanos</label><input type="number" id="randAld" min="0" value="1"></div>'
-     +'<button class="btn-big secondary" onclick="modoAleatorio()">🎲 Repartir aleatoriamente</button></div>'
    +'<div class="card"><h2><span class="emoji">🎭</span> Reparto de roles</h2><label>El total debe coincidir con '+total+' jugadores.</label>'
      +secciones
      +'<div class="warn" id="warnRoles"></div></div>'
+   +eventosHTML
+   +'<div class="card"><h2><span class="emoji">🎲</span> Modo aleatorio</h2><p style="font-size:13px;color:var(--muted)">Reparte al azar entre Lobos y Aldeanos.</p>'
+     +'<div class="random-row"><label>🐺 Lobos</label><input type="number" id="randLobos" min="1" value="1"><label>🧑‍🌾 Aldeanos</label><input type="number" id="randAld" min="0" value="1"></div>'
+     +'<button class="btn-big secondary" onclick="modoAleatorio()">🎲 Repartir aleatoriamente</button></div>'
    +'<button class="btn-big" onclick="empezar()">▶ Repartir roles</button></div>';
   actualizarWarnRoles();
 }
+
+function mostrarInfoRol(id){
+  const r=ROLES[id];
+  if(!r)return;
+  let modal=el("infoModal");
+  if(!modal){modal=document.createElement("div");modal.id="infoModal";modal.className="info-modal";document.body.appendChild(modal);}
+  modal.innerHTML='<div class="info-box"><button class="info-close" onclick="cerrarInfo()">✕</button><div class="info-emoji">'+r.emoji+'</div><div class="info-nombre">'+r.nombre+'</div><p class="info-lore">'+r.lore+'</p></div>';
+  modal.style.display="flex";
+}
+function cerrarInfo(){const m=el("infoModal");if(m)m.style.display="none";}
 
 function toggleExp(exp,on){
   activeExp[exp]=on;
@@ -325,13 +343,22 @@ function renderRoles(){
    +'<button class="btn-big" onclick="siguienteRol()">🙈 Ocultar y pasar el móvil</button></div>';
   var slider=el("slider"), cover=el("cover");
   var contenido=slider.querySelector(".reveal-content");
-  var maxDrag=Math.max(slider.offsetHeight, contenido.scrollHeight)*0.98;
+  // La tapa se desliza hasta revelar el contenido; límite = alto del slider (no el alto total del texto)
+  var maxDrag=slider.offsetHeight*0.9;
   var startY=0, drag=0; var arrastrando=false;
   function setDrag(v){cover.style.transform="translateY("+v+"px)";}
+  function soltar(instant){
+    arrastrando=false;
+    cover.style.transition=instant?"none":"transform .35s cubic-bezier(.22,.9,.3,1)";
+    cover.style.transform="translateY(0px)";
+    drag=0;
+  }
   cover.addEventListener("pointerdown",function(e){arrastrando=true;startY=e.clientY;drag=0;cover.style.transition="none";cover.setPointerCapture(e.pointerId);});
-  cover.addEventListener("pointermove",function(e){if(!arrastrando)return;drag=e.clientY-startY;if(drag<0)drag=0;if(drag>maxDrag)drag=maxDrag;setDrag(drag);});
-  cover.addEventListener("pointerup",function(){var abierto=drag>=maxDrag*0.6;cover.style.transition="transform .3s cubic-bezier(.4,0,.2,1)";setDrag(0);arrastrando=false;drag=0;if(abierto){cover.style.transition="transform .25s ease";setDrag(maxDrag);setTimeout(function(){cover.style.transition="transform .3s ease";setDrag(0);},1600);}});
-  cover.addEventListener("pointercancel",function(){setDrag(0);arrastrando=false;});
+  cover.addEventListener("pointermove",function(e){if(!arrastrando)return;drag=e.clientY-startY;if(drag<0)drag=0;if(drag>maxDrag)drag=maxDrag;cover.style.transform="translateY("+drag+"px)";});
+  cover.addEventListener("pointerup",function(){soltar(false);});
+  cover.addEventListener("pointercancel",function(){soltar(true);});
+  // Toque corto sin arrastrar: destapar momentáneamente (sin vibración)
+  cover.addEventListener("click",function(e){if(Math.abs(drag)>6)return;cover.style.transition="opacity .15s";cover.style.opacity="0";setTimeout(function(){cover.style.opacity="1";},1200);});
 }
 function siguienteRol(){state.idx++;renderJuego();}
 

@@ -4,44 +4,44 @@
 // ============================================================
 
 const ROLES = {
-  // ---- Juego Base ----
-  lobo:       {id:"lobo",        equipo:"lobos",   nombre:"Hombre Lobo",        emoji:"🐺", expansion:"base", lore:"Cada noche, junto a tu manada, elegís en secreto a una víctima. De día, finge ser un aldeano más y despista las sospechas. Objetivo: eliminar a todos los aldeanos."},
-  aldeano:    {id:"aldeano",     equipo:"aldeanos", nombre:"Aldeano (Simple)",   emoji:"🧑‍🌾", expansion:"base", lore:"No tienes poderes especiales. Usa la lógica y tu voto para descubrir a los lobos."},
-  vidente:    {id:"vidente",     equipo:"aldeanos", nombre:"La Vidente",         emoji:"🔮", expansion:"base", lore:"Cada noche despiertas y pides al narrador ver en secreto la carta de un jugador."},
-  bruja:      {id:"bruja",       equipo:"aldeanos", nombre:"La Bruja",           emoji:"🧙‍♀️", expansion:"base", lore:"Tienes 2 pociones de un solo uso: una de curación (salva a la víctima) y otra de muerte (elimina a un jugador)."},
-  cazador:    {id:"cazador",     equipo:"aldeanos", nombre:"El Cazador",         emoji:"🏹", expansion:"base", lore:"Si eres eliminado (por los lobos o en votación), disparas de inmediato a un jugador a tu elección."},
-  cupido:     {id:"cupido",      equipo:"aldeanos", nombre:"Cupido",             emoji:"💘", expansion:"base", lore:"La primera noche eliges a dos jugadores como Enamorados. Si uno muere, el otro muere de pena."},
-  nina:       {id:"nina",        equipo:"aldeanos", nombre:"La Niña Pequeña",    emoji:"👧", expansion:"base", lore:"Puedes entreabrir los ojos durante el turno de los lobos. Si te descubren, mueres en lugar de la víctima."},
+  // ---- 1 · Juego Base ----
+  lobo:       {id:"lobo",        equipo:"lobos",   nombre:"Hombre Lobo",        emoji:"🐺",  expansion:"base", lore:"Cada noche despiertas con tu manada y elegís en secreto una víctima. De día, finge ser un aldeano más y despista las sospechas. Objetivo: eliminar a todos los aldeanos."},
+  aldeano:    {id:"aldeano",     equipo:"aldeanos",nombre:"Aldeano",            emoji:"🧑‍🌾", expansion:"base", lore:"No tienes poderes especiales. Tu arma es la lógica y el debate: descubre quién miente y vota para desenmascarar a los lobos."},
+  vidente:    {id:"vidente",     equipo:"aldeanos",nombre:"La Vidente",         emoji:"🔮",  expansion:"base", lore:"Cada noche despiertas y pides al narrador ver en secreto la carta de un jugador. Sabrás si es lobo o inocente."},
+  bruja:      {id:"bruja",       equipo:"aldeanos",nombre:"La Bruja",           emoji:"🧙‍♀️", expansion:"base", lore:"Tienes 2 pociones de un solo uso: una de curación (salva a la víctima de los lobos) y otra de muerte (elimina a un jugador)."},
+  cazador:    {id:"cazador",     equipo:"aldeanos",nombre:"El Cazador",         emoji:"🏹",  expansion:"base", lore:"Si eres eliminado (por los lobos o en la votación), disparas de inmediato a un jugador a tu elección antes de caer."},
+  cupido:     {id:"cupido",      equipo:"aldeanos",nombre:"Cupido",             emoji:"💘",  expansion:"base", lore:"La primera noche eliges a dos jugadores como Enamorados. Si uno muere, el otro muere de pena."},
+  nina:       {id:"nina",        equipo:"aldeanos",nombre:"La Niña Pequeña",    emoji:"👧",  expansion:"base", lore:"Puedes entreabrir los ojos con disimulo durante el turno de los lobos para identificarlos. Si te descubren, mueres en lugar de la víctima."},
 
-  // ---- Expansión: Personajes ----
-  salvaje:    {id:"salvaje",     equipo:"aldeanos", nombre:"El Niño Salvaje",    emoji:"🧒", expansion:"personajes", lore:"La primera noche eliges un mentor. Mientras viva, eres aldeano. Si muere, te conviertes en Hombre Lobo."},
-  zorro:      {id:"zorro",       equipo:"aldeanos", nombre:"El Zorro",           emoji:"🦊", expansion:"personajes", lore:"Cada noche eliges 3 jugadores sentados juntos. El narrador te dice si hay al menos un lobo (sin decir quién). Si fallas (los 3 inocentes), pierdes tu poder."},
-  sirvienta:  {id:"sirvienta",   equipo:"aldeanos", nombre:"La Sirvienta Fiel",  emoji:"🧹", expansion:"personajes", lore:"Cuando alguien va a ser linchado, puedes revelar tu carta y sacrificarte: el condenado se salva e intercambia su carta contigo."},
-  hermanos:   {id:"hermanos",    equipo:"aldeanos", nombre:"Los Hermanos",       emoji:"👨‍👦‍👦", expansion:"personajes", lore:"Sois aldeanos que os despertáis juntos la primera noche para reconoceros. Confiad ciegamente los unos en los otros."},
-  feriante:   {id:"feriante",    equipo:"aldeanos", nombre:"El Feriante y su Oso",emoji:"🐻", expansion:"personajes", lore:"Cada mañana, antes del debate, el narrador gruñe si hay un lobo a tu derecha o a tu izquierda."},
-  actor:      {id:"actor",       equipo:"aldeanos", nombre:"El Actor",           emoji:"🎭", expansion:"personajes", lore:"Se apartan 3 cartas de poder. Cada noche puedes usar el poder de una de esas cartas sobrantes hasta el amanecer."},
-  caballero:  {id:"caballero",   equipo:"aldeanos", nombre:"Caballero de la Espada Oxidada",emoji:"🛡️", expansion:"personajes", lore:"Si los lobos te matan, contagias tétanos al primer lobo a tu izquierda, que morirá la noche siguiente."},
-  angel:      {id:"angel",       equipo:"solo",    nombre:"El Ángel",           emoji:"👼", expansion:"personajes", lore:"Quieres perder rápido: ganas en solitario si te linchan el primer día o te devoran la primera noche. Si sobrevives, eres aldeano normal."},
-  sectario:   {id:"sectario",    equipo:"solo",    nombre:"El Sectario Abominable",emoji:"🕯️", expansion:"personajes", lore:"La primera noche la aldea se divide en secreto en dos grupos. Ganas en solitario si eliminas a todos los del otro grupo."},
-  infecto:    {id:"infecto",     equipo:"lobos",   nombre:"El Infecto Padre",    emoji:"🧛", expansion:"personajes", lore:"Una vez por partida, puedes infectar (en vez de matar) a la víctima: conserva su rol pero pasa al bando lobo y despierta con ellos."},
-  perro:      {id:"perro",       equipo:"aldeanos", nombre:"El Perro Lobo",      emoji:"🐕", expansion:"personajes", lore:"La primera noche decides en secreto si jugarás toda la partida como aldeano o como Hombre Lobo."},
-  juez:       {id:"juez",        equipo:"aldeanos", nombre:"El Juez Tartamudo",  emoji:"⚖️", expansion:"personajes", lore:"Una vez por partida, tras un linchamiento, puedes hacer una señal para forzar una segunda votación inmediata."},
-  aldeanoaldeano:{id:"aldeanoaldeano",equipo:"aldeanos",nombre:"El Aldeano-Aldeano",emoji:"🙂", expansion:"personajes", lore:"Tu carta es de aldeano por ambas caras y es pública: todos saben que eres inocente."},
-  gitana:     {id:"gitana",      equipo:"aldeanos", nombre:"La Gitana",          emoji:"🔮", expansion:"personajes", lore:"Apoyo de Luna Nueva: permite el Espiritismo, haciendo preguntas de Sí/No a los muertos con cartas de evento."},
-  guarda:     {id:"guarda",      equipo:"aldeanos", nombre:"El Guarda Campestre",emoji:"🪵", expansion:"personajes", lore:"Apoyo de Luna Nueva: el narrador te ofrece cartas de evento y decides en secreto cuál aplicar."},
+  // ---- 2 · Fase Lunar (dependen de las cartas de evento) ----
+  protector:  {id:"protector",   equipo:"aldeanos",nombre:"El Protector",       emoji:"🛡️", expansion:"luna", lore:"Cada noche despiertas antes que los lobos y proteges a un jugador: si lo atacan, no muere. No puedes proteger al mismo dos noches seguidas (puedes protegerte a ti)."},
+  flautista:  {id:"flautista",   equipo:"solo",    nombre:"El Flautista",       emoji:"🪈",  expansion:"luna", lore:"Cada noche hechizas a dos jugadores, que despiertan juntos para reconocerse. Ganas en solitario si todos los vivos están hechizados."},
+  anciano:    {id:"anciano",     equipo:"aldeanos",nombre:"El Anciano",         emoji:"🧓",  expansion:"luna", lore:"Sobrevives al primer ataque de los lobos (necesitan dos golpes). Si te matan los aldeanos, todos pierden sus poderes especiales."},
+  expiatorio: {id:"expiatorio",  equipo:"aldeanos",nombre:"El Cabeza de Turco", emoji:"🐐",  expansion:"luna", lore:"Si hay empate en la votación, tú eres linchado en su lugar. Al morir, decides quién puede y quién no puede votar al día siguiente."},
+  tonto:      {id:"tonto",       equipo:"aldeanos",nombre:"El Tonto del Pueblo",emoji:"🤡",  expansion:"luna", lore:"Si te linchan, revelas tu carta y la aldea se apiada de ti: te salvas, pero pierdes tu derecho a votar el resto de la partida."},
+  gitana:     {id:"gitana",      equipo:"aldeanos",nombre:"La Gitana",          emoji:"🔮",  expansion:"luna", lore:"Permite el Espiritismo: invoca a los muertos con las cartas de evento para hacer preguntas de Sí/No."},
+  guarda:     {id:"guarda",      equipo:"aldeanos",nombre:"El Guarda Campestre",emoji:"🌲",  expansion:"luna", lore:"El narrador te ofrece cartas de evento de Luna Nueva y tú decides en secreto cuál aplicar esta partida."},
 
-  // ---- Expansión: Luna Nueva ----
-  protector:  {id:"protector",   equipo:"aldeanos", nombre:"El Protector",       emoji:"🛟", expansion:"luna", lore:"Cada noche despiertas antes que los lobos y proteges a un jugador. No puedes proteger al mismo dos noches seguidas (puedes protegerte a ti)."},
-  flautista:  {id:"flautista",   equipo:"solo",    nombre:"El Flautista",       emoji:"🎺", expansion:"luna", lore:"Cada noche hechizas a dos jugadores, que despiertan juntos para reconocerse. Ganas en solitario si todos los vivos están hechizados."},
-  anciano:    {id:"anciano",     equipo:"aldeanos", nombre:"El Anciano del Pueblo",emoji:"👴", expansion:"luna", lore:"Sobrevives al primer ataque de los lobos. Si te matan los aldeanos, todos pierden sus poderes."},
-  expiatorio: {id:"expiatorio",  equipo:"aldeanos", nombre:"El Cabeza de Turco", emoji:"🐐", expansion:"luna", lore:"Si hay empate en la votación, tú eres linchado en su lugar. Al morir, decides quién vota al día siguiente."},
-  tonto:      {id:"tonto",       equipo:"aldeanos", nombre:"El Tonto del Pueblo",emoji:"🤪", expansion:"luna", lore:"Si te linchan, revelas tu carta y te salvas, pero pierdes tu derecho a votar el resto de la partida."},
+  // ---- 3 · Otros Personajes ----
+  salvaje:    {id:"salvaje",     equipo:"aldeanos",nombre:"El Niño Salvaje",    emoji:"🌿",  expansion:"otros", lore:"La primera noche eliges un mentor. Mientras viva, eres un aldeano normal. Si tu mentor muere, te conviertes automáticamente en Hombre Lobo."},
+  zorro:      {id:"zorro",       equipo:"aldeanos",nombre:"El Zorro",           emoji:"🦊",  expansion:"otros", lore:"Cada noche eliges 3 jugadores sentados juntos. El narrador te dice si hay al menos un lobo (sin decirte quién). Si fallas (los 3 inocentes), pierdes tu poder para siempre."},
+  sirvienta:  {id:"sirvienta",   equipo:"aldeanos",nombre:"La Sirvienta Fiel",  emoji:"🧹",  expansion:"otros", lore:"Cuando alguien va a ser linchado, puedes revelar tu carta y sacrificarte: el condenado se salva e intercambia su carta contigo."},
+  hermanos:   {id:"hermanos",    equipo:"aldeanos",nombre:"Los Hermanos",       emoji:"👬",  expansion:"otros", lore:"Sois aldeanos que os despertáis juntos la primera noche para reconoceros. Podéis confiar ciegamente los unos en los otros."},
+  feriante:   {id:"feriante",    equipo:"aldeanos",nombre:"El Feriante y su Oso",emoji:"🐻‍❄️",expansion:"otros", lore:"Cada mañana, antes del debate, el narrador gruñe si hay un lobo sentado a tu derecha o a tu izquierda."},
+  actor:      {id:"actor",       equipo:"aldeanos",nombre:"El Actor",           emoji:"🎭",  expansion:"otros", lore:"Se apartan 3 cartas de poder antes de empezar. Cada noche puedes usar el poder de una de esas cartas sobrantes hasta el amanecer."},
+  caballero:  {id:"caballero",   equipo:"aldeanos",nombre:"Caballero Oxidado",  emoji:"🗡️",  expansion:"otros", lore:"Si los lobos te matan, contagias tétanos al primer lobo a tu izquierda, que morirá la noche siguiente, exculpando a los que están entre vosotros."},
+  angel:      {id:"angel",       equipo:"solo",     nombre:"El Ángel",           emoji:"😇",  expansion:"otros", lore:"Quieres perder rápido: ganas en solitario si te linchan el primer día o te devoran la primera noche. Si sobrevives, te conviertes en aldeano normal."},
+  sectario:   {id:"sectario",    equipo:"solo",     nombre:"El Sectario",        emoji:"🕯️",  expansion:"otros", lore:"La primera noche la aldea se divide en secreto en dos grupos. Ganas en solitario si eliminas a todos los del grupo contrario."},
+  infecto:    {id:"infecto",     equipo:"lobos",    nombre:"El Infecto Padre",  emoji:"🦇",  expansion:"otros", lore:"Una vez por partida, puedes infectar (en vez de matar) a la víctima: conserva su rol pero pasa al bando lobo y despierta con ellos."},
+  perro:      {id:"perro",       equipo:"aldeanos",nombre:"El Perro Lobo",      emoji:"🐕",  expansion:"otros", lore:"La primera noche decides en secreto si jugarás toda la partida como un aldeano normal o como un Hombre Lobo."},
+  juez:       {id:"juez",        equipo:"aldeanos",nombre:"El Juez Tartamudo",  emoji:"⚖️",  expansion:"otros", lore:"Una vez por partida, tras un linchamiento, puedes hacer una señal secreta para forzar una segunda votación y linchamiento inmediatos."},
+  aldeanoaldeano:{id:"aldeanoaldeano",equipo:"aldeanos",nombre:"El Aldeano-Aldeano",emoji:"🙂", expansion:"otros", lore:"Tu carta es de aldeano por ambas caras y es pública: todos saben con certeza que eres inocente."},
 };
 
 const EXPANSIONES = {
-  base:       {nombre:"🐺 Juego Base",     desc:"Los personajes clásicos."},
-  personajes: {nombre:"👥 Personajes",     desc:"Nuevos bandos, amenazas y estrategias."},
-  luna:       {nombre:"🌕 Luna Nueva",     desc:"Roles de eventos y 36 cartas de evento."},
+  base:  {nombre:"🐺 Juego Base",        desc:"Los personajes clásicos de Castronegro."},
+  luna:  {nombre:"🌕 Fase Lunar",        desc:"Roles que dependen de las cartas de evento."},
+  otros: {nombre:"🎭 Otros Personajes",  desc:"Nuevos bandos, amenazas y estrategias."},
 };
 
 function isLoboId(id){return ROLES[id] && ROLES[id].equipo==="lobos";}
@@ -94,7 +94,7 @@ let state={
   faseNoche:"dormir", ultimoMuerto:-1, causaMuerto:"",
   pareja:[], muertosPorAmor:[], mentor:-1, convertido:{},
   infectoUsado:false, loboFerozVivo:true, albinoUsado:false,
-  ancianoSalvado:false, tontoSalvado:false,
+  ancianoSalvado:false, tontoSalvado:false, usarEventos:false,
   protectorUltimo:-1, hechizados:[], eventoActual:null,
   zorroFallado:false, perroDecidido:false, angelVivo:true,
   protegido:-1, sinVotacion:false,
@@ -161,7 +161,7 @@ function bindSecreto(){const c=document.querySelector(".secreto-card .secreto-co
 
 // ---------- Config de roles ----------
 let cfgRoles={};
-let activeExp={base:true, personajes:false, luna:false};
+let activeExp={base:true, luna:false, otros:false};
 const colorRol={lobo:"#ff6b5b",aldeano:"#9db1ff",vidente:"#3ddc84",bruja:"#b23bff",cazador:"#f5c542",cupido:"#ff79c6",nina:"#ffb3c1",salvaje:"#a0e57e",zorro:"#ffb347",sirvienta:"#d291ff",hermanos:"#7ee2a8",feriante:"#c8b06a",actor:"#ffd166",caballero:"#b0b0b0",angel:"#ffffff",sectario:"#c99",infecto:"#9b5de5",perro:"#d9a066",juez:"#f8f9fa",aldeanoaldeano:"#e8e8e8",gitana:"#c39bd3",guarda:"#8fa3ff",protector:"#6ec6ff",flautista:"#7ec8e3",anciano:"#c9a76b",expiatorio:"#d9c58a",tonto:"#f781c3"};
 function initCfg(){cfgRoles={};Object.keys(ROLES).forEach(id=>cfgRoles[id]=0);}
 initCfg();
@@ -226,13 +226,18 @@ function renderRolesConfig(){
       +'<span class="exp-meta">'+usados+'/'+ids.length+' roles · '+EXPANSIONES[exp].desc+'</span>'
       +'</summary><div class="role-grid">'+tarjetas+'</div></details>';
   }
-  // Eventos de Luna Nueva: sección separada (informativa)
-  let eventosHTML="";
-  if(activeExp.luna){
-    eventosHTML='<details class="expansion eventos"><summary><span class="exp-name">📜 Eventos de Luna Nueva</span><span class="exp-meta">'+EVENTOS.length+' cartas · se roban al amanecer</span></summary><div class="eventos-list">'
+
+  // Tick independiente: jugar con cartas de evento de Luna Nueva (aunque no haya roles lunares)
+  let eventosHTML='<div class="card eventos-card">'
+    +'<h2><span class="emoji">📜</span> Cartas de evento (Luna Nueva)</h2>'
+    +'<label class="switch switch-block"><input type="checkbox" '+(state.usarEventos?'checked':'')+' onchange="toggleEventos(this.checked)"><span class="switch-label">Usar cartas de evento</span></label>'
+    +'<p style="font-size:12px;color:var(--muted)">Actívalo para robar una carta de evento al amanecer de cada día, aunque no haya personajes de Fase Lunar.</p>';
+  if(state.usarEventos){
+    eventosHTML+='<details class="expansion eventos" open><summary><span class="exp-name">Ver las '+EVENTOS.length+' cartas</span><span class="exp-meta">se roban al amanecer</span></summary><div class="eventos-list">'
       +EVENTOS.map(ev=>'<div class="ev-item"><span class="ev-emoji">'+ev.emoji+'</span><span class="ev-nombre-sm">'+ev.nombre+'</span><p>'+ev.desc+'</p></div>').join("")
       +'</div></details>';
   }
+  eventosHTML+='</div>';
 
   app.innerHTML='<div class="screen active">'
    +'<h1>🃏 Roles</h1>'
@@ -246,6 +251,11 @@ function renderRolesConfig(){
      +'<button class="btn-big secondary" onclick="modoAleatorio()">🎲 Repartir aleatoriamente</button></div>'
    +'<button class="btn-big" onclick="empezar()">▶ Repartir roles</button></div>';
   actualizarWarnRoles();
+}
+
+function toggleEventos(on){
+  state.usarEventos=on;
+  renderRolesConfig();
 }
 
 function mostrarInfoRol(id){
@@ -300,7 +310,7 @@ function empezar(){
   state.vivos=state.nombres.map((_,i)=>i);
   state.idx=0; state.ronda=1; state.pareja=[]; state.muertosPorAmor=[];
   state.mentor=-1; state.convertido={}; state.infectoUsado=false; state.loboFerozVivo=true; state.albinoUsado=false;
-  state.ancianoSalvado=false; state.tontoSalvado=false; state.protectorUltimo=-1; state.hechizados=[]; state.zorroFallado=false; state.perroDecidido=false; state.angelVivo=true; state.eventoActual=null; state.protegido=-1; state.sinVotacion=false; state.grupoSectario={}; state.sectarioListo=false; state.juezUsado=false; state.protectorHistorial=[]; state.sinVoto=[]; state.eventoMensaje=""; state.eventoAplicado=false; state.sinNoche=false; state.entusiasmo=false; state.delirio=false;
+  state.ancianoSalvado=false; state.tontoSalvado=false; state.usarEventos=state.usarEventos||false; state.protectorUltimo=-1; state.hechizados=[]; state.zorroFallado=false; state.perroDecidido=false; state.angelVivo=true; state.eventoActual=null; state.protegido=-1; state.sinVotacion=false; state.grupoSectario={}; state.sectarioListo=false; state.juezUsado=false; state.protectorHistorial=[]; state.sinVoto=[]; state.eventoMensaje=""; state.eventoAplicado=false; state.sinNoche=false; state.entusiasmo=false; state.delirio=false;
   state.fase="juego";
   prepararNoche(); render();
 }
@@ -334,31 +344,23 @@ function renderRoles(){
    +'</div>'
    +'<div class="reveal-cover" id="cover">'
    +'<div class="nombre-tapa">'+nombre+'</div>'
-   +'<div class="tap-aviso">👆 Toca y manten para revelar</div>'
-   +'<div class="flecha">👇 desliza hacia abajo</div>'
-   +'<div class="hint">Solo tú debes verlo. Al soltar se tapará de nuevo.</div>'
+   +'<div class="tap-aviso">👆 Mantén pulsado para ver</div>'
+   +'<div class="hint">Solo tú debes verlo. Mientras mantengas el dedo, verás tu rol. Al soltar se tapará.</div>'
    +'</div>'
    +'</div>'
    +'</div>'
    +'<button class="btn-big" onclick="siguienteRol()">🙈 Ocultar y pasar el móvil</button></div>';
-  var slider=el("slider"), cover=el("cover");
-  var contenido=slider.querySelector(".reveal-content");
-  // La tapa se desliza hasta revelar el contenido; límite = alto del slider (no el alto total del texto)
-  var maxDrag=slider.offsetHeight*0.9;
-  var startY=0, drag=0; var arrastrando=false;
-  function setDrag(v){cover.style.transform="translateY("+v+"px)";}
-  function soltar(instant){
-    arrastrando=false;
-    cover.style.transition=instant?"none":"transform .35s cubic-bezier(.22,.9,.3,1)";
-    cover.style.transform="translateY(0px)";
-    drag=0;
-  }
-  cover.addEventListener("pointerdown",function(e){arrastrando=true;startY=e.clientY;drag=0;cover.style.transition="none";cover.setPointerCapture(e.pointerId);});
-  cover.addEventListener("pointermove",function(e){if(!arrastrando)return;drag=e.clientY-startY;if(drag<0)drag=0;if(drag>maxDrag)drag=maxDrag;cover.style.transform="translateY("+drag+"px)";});
-  cover.addEventListener("pointerup",function(){soltar(false);});
-  cover.addEventListener("pointercancel",function(){soltar(true);});
-  // Toque corto sin arrastrar: destapar momentáneamente (sin vibración)
-  cover.addEventListener("click",function(e){if(Math.abs(drag)>6)return;cover.style.transition="opacity .15s";cover.style.opacity="0";setTimeout(function(){cover.style.opacity="1";},1200);});
+  var cover=el("cover");
+  // Revelación SOLO al mantener pulsado (fade por opacidad, sin deslizar ni vibrar)
+  function tapar(){cover.style.transition="opacity .18s ease";cover.style.opacity="1";}
+  function destapar(){cover.style.transition="opacity .08s ease";cover.style.opacity="0";}
+  cover.addEventListener("pointerdown",destapar);
+  cover.addEventListener("pointerup",tapar);
+  cover.addEventListener("pointerleave",tapar);
+  cover.addEventListener("pointercancel",tapar);
+  cover.addEventListener("touchstart",destapar,{passive:true});
+  cover.addEventListener("touchend",tapar);
+  cover.addEventListener("touchcancel",tapar);
 }
 function siguienteRol(){state.idx++;renderJuego();}
 
@@ -574,7 +576,7 @@ function marcarMuerto(idx,causa){
 
 // ---------- Eventos de Luna Nueva ----------
 function robarEvento(){
-  if(!activeExp.luna)return null;
+  if(!state.usarEventos)return null;
   const e=EVENTOS[Math.floor(Math.random()*EVENTOS.length)];
   state.eventoActual=e;
   state.eventoAplicado=false;

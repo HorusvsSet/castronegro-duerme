@@ -113,12 +113,14 @@ function escogerVoz(){
   if(!synth)return false;
   const vs=synth.getVoices();
   if(!vs.length)return false;
-  const preferidos=vs.filter(v=>/es/i.test(v.lang));
-  const p=preferidos.find(v=>/es[-_]ES/i.test(v.lang)&&/female|mujer|monica|elena|helena|lupe|maria|paulina|paola|rosa|sofia/i.test(v.name))
-    || preferidos.find(v=>/es[-_]ES/i.test(v.lang))
-    || preferidos.find(v=>/es[-_]MX/i.test(v.lang))
-    || preferidos.find(v=>/google/i.test(v.name))
-    || preferidos[0] || vs[0];
+  const es=vs.filter(v=>/^es/i.test(v.lang));
+  const fem=/female|mujer|monica|elena|helena|lupe|maria|paulina|paola|rosa|sofia|sabina|emilia|laura|carmen|conchita|alba|sara/i;
+  const natura=/natural|neural|premium|enhanced|online|google|microsoft|siri/i;
+  const p=es.find(v=>fem.test(v.name)&&natura.test(v.name))
+    || es.find(v=>fem.test(v.name))
+    || es.find(v=>natura.test(v.name))
+    || es.find(v=>/ES/i.test(v.lang))
+    || es[0] || vs[0];
   if(p){voix=p;vozCargada=true;return true;}
   return false;
 }
@@ -143,8 +145,8 @@ function hablar(t,onend){
     const frag=trozos[i++].trim();
     const u=new SpeechSynthesisUtterance(frag);
     u.lang="es-ES"; if(voix)u.voice=voix;
-    u.rate=0.95; u.pitch=0.75; u.volume=1;
-    const pausa=/[.,;:!?¿?¡]$/.test(frag)?180:0;
+    u.rate=1.1; u.pitch=0.85; u.volume=1;
+    const pausa=/[.,;:!?¿?¡]$/.test(frag)?110:0;
     let aviso=0;
     u.onend=()=>{if(aviso)return;aviso=1;setTimeout(seguir,pausa);};
     u.onerror=()=>{if(aviso)return;aviso=1;seguir();};
@@ -276,6 +278,13 @@ function toggleExp(exp,on){
 function cambiarRol(id,d){
   cfgRoles[id]=Math.max(0,(cfgRoles[id]||0)+d);
   const c=el("cnt_"+id); if(c)c.textContent=cfgRoles[id];
+  // Al añadir un personaje de Fase Lunar, se activan las cartas de evento sí o sí
+  if(d>0 && ROLES[id] && ROLES[id].expansion==="luna"){
+    activeExp.luna=true;
+    state.usarEventos=true;
+    renderRolesConfig();
+    return;
+  }
   actualizarWarnRoles();
 }
 function totalRoles(){return Object.keys(cfgRoles).reduce((a,id)=>a+(cfgRoles[id]||0),0);}
@@ -615,12 +624,12 @@ function renderAmanecer(body){
     // Protección del Protector
     if(protegido===idx){
       items+='<div class="result-item"><span>'+n+'</span><span class="status-pill" style="background:var(--ok)">🛟 Protegido</span></div>';
-      anuncio='Amanece en Castronegro. Los lobos atacaron, pero la víctima estaba protegida y nadie ha muerto.';
+      anuncio='Nadie ha muerto: la víctima estaba protegida.';
     }
     // Anciano sobrevive al primer ataque
     else if(state.roles[idx]==="anciano" && !state.ancianoSalvado){
       items+='<div class="result-item"><span>'+n+'</span><span class="status-pill" style="background:var(--ok)">🛡️ El Anciano sobrevivió</span></div>';
-      anuncio='Amanece en Castronegro. Los lobos atacaron al Anciano, pero sobrevivió a la primera embestida.';
+      anuncio='El Anciano sobrevivió al ataque de los lobos.';
       state.ancianoSalvado=true;
     }
     // Ángel devorado la primera noche gana
@@ -630,21 +639,21 @@ function renderAmanecer(body){
     else{
       items+='<div class="result-item"><span>'+n+'</span><span class="status-pill" style="background:var(--lobo)">💀 Devorado</span></div>';
       marcarMuerto(idx,"lobos");
-      anuncio='Amanece en Castronegro. Esta noche los lobos han devorado a '+n+'.';
+      anuncio='Los lobos han devorado a '+n+'.';
       // Caballero Oxidado: contagia tétanos al lobo de su izquierda (simplificado: lo anunciamos)
       if(state.roles[idx]==="caballero"){
-        anuncio+=' El Caballero ha contagiado el tétanos a un lobo.';
+        anuncio+=' El Caballero contagió el tétanos a un lobo.';
       }
     }
   }
   else if(state.causaMuerto==="veneno"){
     const n=state.nombres[state.ultimoMuerto];
     items+='<div class="result-item"><span>'+n+'</span><span class="status-pill" style="background:var(--accent)">☠️ Envenenado</span></div>';
-    anuncio='Amanece en Castronegro. Esta noche alguien ha sido envenenado: '+n+'.';
+    anuncio='Alguien ha sido envenenado: '+n+'.';
   }
   else{
     items+='<div class="result-item"><span>Nadie ha muerto esta noche</span><span class="status-pill" style="background:var(--ok)">🌤️</span></div>';
-    anuncio='Amanece en Castronegro. Nadie ha muerto esta noche.';
+    anuncio='Nadie ha muerto esta noche.';
   }
 
   // Muertos de amor
@@ -676,8 +685,16 @@ function renderAmanecer(body){
   if(state.ultimoMuerto>=0&&state.roles[state.ultimoMuerto]==="cazador"&&state.balaCazador)items+='<button class="danger" style="margin-top:8px" onclick="disparoCazador()">🏹 El Cazador usa su última bala</button>';
 
   state.delirio=false;
-  narra(anuncio);
-  body.innerHTML='<div class="card"><h2><span class="emoji">🌅</span> Amanece en Castronegro</h2><div class="result-list" id="resAmanecer"></div></div>'+narradorHTML(anuncio)+'<button class="btn-big" onclick="pasarAlDia()">☀️ Anunciar el día</button>';
+  // Carta de evento de Luna Nueva: se roba, se muestra y se LEE en voz alta al amanecer
+  const ev=robarEvento();
+  let discurso=anuncio;
+  if(ev){
+    aplicarEvento(ev);
+    discurso+=' Carta de evento: '+ev.nombre+'.';
+    items+='<div class="result-item evento-dawn"><span>'+ev.emoji+' '+ev.nombre+'</span><span class="status-pill" style="background:var(--gold)">📜 Evento</span></div>';
+  }
+  narra(discurso);
+  body.innerHTML='<div class="card"><h2><span class="emoji">🌅</span> Amanece en Castronegro</h2><div class="result-list" id="resAmanecer"></div></div>'+narradorHTML(discurso)+'<button class="btn-big" onclick="pasarAlDia()">☀️ Anunciar el día</button>';
   el("resAmanecer").innerHTML=items;
 }
 function disparoCazador(){
@@ -689,9 +706,6 @@ function disparoCazador(){
 function pasarAlDia(){
   if(comprobarYFin())return;
   state.faseNoche="dia";
-  // robar y aplicar carta de evento de Luna Nueva
-  const ev=robarEvento();
-  if(ev){ aplicarEvento(ev); }
   renderJuego();
 }
 
@@ -704,8 +718,8 @@ function renderDia(body){
     const ev=state.eventoActual;
     eventoHTML="<div class=\"evento-card evento-\"+ev.tipo+\"\"><span class=\"ev-emoji\">"+ev.emoji+"</span><div class=\"ev-head\"><span class=\"ev-nombre\">"+ev.nombre+"</span><span class=\"ev-tipo\">"+etiquetaTipo(ev.tipo)+"</span></div><p>"+ev.desc+"</p>"+(state.eventoMensaje?"<div class=\"ev-mensaje\">"+state.eventoMensaje+"</div>":"")+"</div>";
   }
-  body.innerHTML="<div class=\"card\"><h2><span class=\"emoji\">🗣️</span> El pueblo debate</h2><p style=\"font-size:14px;line-height:1.6\">Los aldeanos discuten quién puede ser lobo. Cuando hayáis decidido, id a la votación.</p>"+eventoHTML+"</div>"+narradorHTML("El pueblo despierta. Ha llegado el momento de debatir y votar.")+"<div class=\"action-btns\"><button class=\"btn-big\" onclick=\"irAVotacion()\">🗳️ Ir a la votación</button><button class=\"btn-big secondary\" onclick=\"siguienteRonda()\">🌙 Pasar esta votación</button></div>";
-  narra("El pueblo despierta. Ha llegado el momento de debatir y votar.");
+  body.innerHTML="<div class=\"card\"><h2><span class=\"emoji\">🗣️</span> El pueblo debate</h2><p style=\"font-size:14px;line-height:1.6\">Los aldeanos discuten quién puede ser lobo. Cuando hayáis decidido, id a la votación.</p>"+eventoHTML+"</div>"+narradorHTML("El pueblo despierta. A debatir y votar.")+"<div class=\"action-btns\"><button class=\"btn-big\" onclick=\"irAVotacion()\">🗳️ Ir a la votación</button><button class=\"btn-big secondary\" onclick=\"siguienteRonda()\">🌙 Pasar esta votación</button></div>";
+  narra("El pueblo despierta. A debatir y votar.");
 }
 function etiquetaTipo(t){return t==="votacion"?"🗳️ votación":t==="noche"?"🌙 noche":t==="espiritismo"?"👻 espiritismo":t==="inmediato"?"⚡ inmediato":t==="amanecer"?"🌅 amanecer":"☀️ día";}
 
@@ -714,8 +728,8 @@ function irAVotacion(){
   state.faseNoche="votacion";renderVotacion();
 }
 function renderVotacion(){
-  const body=el("juegoBody");narra("Es la hora de la votación. Cada aldeano vota en secreto al jugador que cree que es lobo.");let sel=null;
-  body.innerHTML='<div class="card"><h2><span class="emoji">🗳️</span> Votación del pueblo</h2><p style="font-size:13px;color:var(--muted)">Selecciona al jugador expulsado por mayoría.</p><div class="result-list" id="votantes"></div></div>'+narradorHTML("Es la hora de la votación.")+'<button class="btn-big danger" id="votarBtn" disabled>✅ Expulsar del pueblo</button>'+(state.vivos.some(i=>state.roles[i]==="expiatorio")?'<button class="btn-big secondary" onclick="empateVotacion()">⚖️ Hay empate</button>':'');
+  const body=el("juegoBody");narra("Hora de votar. Cada aldeano señala a su sospechoso.");let sel=null;
+  body.innerHTML='<div class="card"><h2><span class="emoji">🗳️</span> Votación del pueblo</h2><p style="font-size:13px;color:var(--muted)">Selecciona al jugador expulsado por mayoría.</p><div class="result-list" id="votantes"></div></div>'+narradorHTML("Hora de votar.")+'<button class="btn-big danger" id="votarBtn" disabled>✅ Expulsar del pueblo</button>'+(state.vivos.some(i=>state.roles[i]==="expiatorio")?'<button class="btn-big secondary" onclick="empateVotacion()">⚖️ Hay empate</button>':'');
   const list=el("votantes");
   state.vivos.forEach(i=>{const d=document.createElement("div");d.className="result-item";d.innerHTML='<span>'+state.nombres[i]+'</span>';d.onclick=()=>{document.querySelectorAll("#votantes .result-item").forEach(x=>x.style.outline="none");d.style.outline="2px solid var(--accent2)";sel=i;el("votarBtn").disabled=false;};list.appendChild(d);});
   el("votarBtn").onclick=()=>{

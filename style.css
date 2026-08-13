@@ -42,7 +42,7 @@
     .subtitle{font-size:12px;}
   }
   @media (min-width:1600px){#app{max-width:1100px;}}
-  h1{font-size:26px;text-align:center;letter-spacing:1px;text-shadow:0 2px 18px rgba(178,59,255,.45);}
+  h1{font-size:26px;text-align:center;letter-spacing:1px;background:linear-gradient(135deg,#ece4f5,#b23bff 55%,#ff4d6d);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:none;}
   h1 .moon{font-size:30px;display:inline-block;animation:float 4s ease-in-out infinite;filter:drop-shadow(0 4px 14px rgba(245,197,66,.5));}
   @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
   .subtitle{text-align:center;color:var(--muted);font-size:13px;margin-top:-8px;}
@@ -222,6 +222,8 @@
   .ev-tipo{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.1);color:var(--muted);}
   .evento-card p{font-size:13px;color:var(--text);width:100%;line-height:1.5;margin:0;}
   .ev-mensaje{width:100%;font-size:13px;font-weight:700;color:var(--ok);background:rgba(61,220,132,.12);border:1px solid rgba(61,220,132,.3);border-radius:10px;padding:8px 12px;margin-top:4px;}
+  .evento-dawn{background:rgba(245,197,66,.10);border:1px solid rgba(245,197,66,.3);}
+  .evento-dawn span:first-child{color:var(--gold);font-weight:700;}
   .evento-noche{background:rgba(157,177,255,.08);border-color:rgba(157,177,255,.3);}
   .evento-noche .ev-nombre{color:#9db1ff;}
   .evento-votacion{background:rgba(255,77,109,.08);border-color:rgba(255,77,109,.3);}

@@ -154,6 +154,26 @@
   .expansion .exp-desc{font-size:11px;color:var(--muted);padding-right:24px;}
   .expansion .role-list{padding:2px 14px 14px;display:flex;flex-direction:column;gap:8px;}
 
+  /* Selector de roles en grilla de tarjetas */
+  .role-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:2px 14px 14px;}
+  @media (max-width:420px){.role-grid{grid-template-columns:repeat(2,1fr);}}
+  .role-card{background:#1a0e2c;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;transition:border .15s, transform .08s;}
+  .role-card:active{transform:scale(.98);}
+  .role-card-on{border:1px solid var(--accent);background:linear-gradient(160deg,#241238,#1a0e2c);box-shadow:0 0 0 1px rgba(178,59,255,.3);}
+  .role-card-top{display:flex;align-items:center;justify-content:space-between;}
+  .rc-emoji{font-size:30px;}
+  .rc-count{width:26px;height:26px;border-radius:50%;background:#3a2b55;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;}
+  .rc-count-on{background:var(--accent);color:#fff;}
+  .rc-name{font-weight:800;font-size:14px;line-height:1.3;}
+  .chip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;align-self:flex-start;}
+  .chip-lobo{background:rgba(192,57,43,.25);color:#ff8a7a;border:1px solid rgba(192,57,43,.4);}
+  .chip-solo{background:rgba(245,197,66,.15);color:var(--gold);border:1px solid rgba(245,197,66,.35);}
+  .chip-aldeano{background:rgba(61,220,132,.15);color:#7ee2a8;border:1px solid rgba(61,220,132,.3);}
+  .role-card .stepper{display:flex;gap:8px;justify-content:flex-end;align-items:center;margin-top:2px;}
+  .role-card .stepper button{width:34px;height:34px;padding:0;font-size:18px;border-radius:10px;}
+  .role-card .stepper button.plus{background:linear-gradient(135deg,var(--accent),#7b2fd0);}
+  .exp-meta{font-size:11px;color:var(--muted);padding-right:24px;}
+
   /* interruptor (switch) de expansión */
   .switch{display:flex;align-items:center;gap:8px;cursor:pointer;flex-wrap:wrap;}
   .switch input{display:none;}
@@ -170,6 +190,21 @@
   .random-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
   .random-row label{font-size:14px;font-weight:700;color:var(--text);}
   .random-row input[type=number]{width:72px;padding:10px;font-size:18px;}
+
+  .evento-card{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px;background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.3);border-radius:14px;padding:14px;margin-top:10px;}
+  .evento-card .ev-emoji{font-size:30px;line-height:1;}
+  .ev-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex:1;}
+  .ev-nombre{font-weight:800;color:var(--gold);font-size:15px;}
+  .ev-tipo{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.1);color:var(--muted);}
+  .evento-card p{font-size:13px;color:var(--text);width:100%;line-height:1.5;margin:0;}
+  .ev-mensaje{width:100%;font-size:13px;font-weight:700;color:var(--ok);background:rgba(61,220,132,.12);border:1px solid rgba(61,220,132,.3);border-radius:10px;padding:8px 12px;margin-top:4px;}
+  .evento-noche{background:rgba(157,177,255,.08);border-color:rgba(157,177,255,.3);}
+  .evento-noche .ev-nombre{color:#9db1ff;}
+  .evento-votacion{background:rgba(255,77,109,.08);border-color:rgba(255,77,109,.3);}
+  .evento-votacion .ev-nombre{color:#ff8a9a;}
+  .evento-inmediato{background:rgba(178,59,255,.08);border-color:rgba(178,59,255,.3);}
+  .evento-inmediato .ev-nombre{color:#cf9bff;}
+  .evento-espiritismo{background:rgba(245,197,66,.06);border-color:rgba(245,197,66,.25);}
 
   .result-list{display:flex;flex-direction:column;gap:8px;}
   .result-item{
